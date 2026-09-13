@@ -1,4 +1,5 @@
 import { UserSession, DispatchedEmailTransmission } from '../types.ts';
+import { safeFetchJson } from './apiClient.ts';
 
 const SESSION_KEY = 'orca_session';
 
@@ -53,12 +54,10 @@ function getAuthHeaders(): HeadersInit {
 }
 
 export async function login(email: string, password: string): Promise<AuthResponse> {
-  const res = await fetch('/api/auth/login', {
+  return safeFetchJson<AuthResponse>('/api/auth/login', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: email.trim(), password }),
   });
-  return res.json();
 }
 
 export async function signup(payload: {
@@ -69,15 +68,13 @@ export async function signup(payload: {
   organization?: string;
   role?: string;
 }): Promise<AuthResponse> {
-  const res = await fetch('/api/auth/signup', {
+  return safeFetchJson<AuthResponse>('/api/auth/signup', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       ...payload,
       email: payload.email.trim(),
     }),
   });
-  return res.json();
 }
 
 export async function verifyOTP(
@@ -85,42 +82,34 @@ export async function verifyOTP(
   code: string,
   purpose: '2fa_login' | 'email_verification' | 'enable_2fa' | string = '2fa_login'
 ): Promise<AuthResponse> {
-  const res = await fetch('/api/auth/verify-otp', {
+  return safeFetchJson<AuthResponse>('/api/auth/verify-otp', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: email.trim(), code: code.trim(), purpose }),
   });
-  return res.json();
 }
 
 export async function resendOTP(
   email: string,
   purpose: '2fa_login' | 'email_verification' | 'enable_2fa' | string = '2fa_login'
 ): Promise<AuthResponse> {
-  const res = await fetch('/api/auth/resend-otp', {
+  return safeFetchJson<AuthResponse>('/api/auth/resend-otp', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: email.trim(), purpose }),
   });
-  return res.json();
 }
 
 export async function googleAuth(credential: string, accessToken?: string): Promise<AuthResponse> {
-  const res = await fetch('/api/auth/google', {
+  return safeFetchJson<AuthResponse>('/api/auth/google', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ credential, accessToken }),
   });
-  return res.json();
 }
 
 export async function forgotPassword(email: string): Promise<AuthResponse> {
-  const res = await fetch('/api/auth/forgot-password', {
+  return safeFetchJson<AuthResponse>('/api/auth/forgot-password', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: email.trim() }),
   });
-  return res.json();
 }
 
 export async function resetPassword(payload: {
@@ -128,27 +117,22 @@ export async function resetPassword(payload: {
   token: string;
   newPassword: string;
 }): Promise<AuthResponse> {
-  const res = await fetch('/api/auth/reset-password', {
+  return safeFetchJson<AuthResponse>('/api/auth/reset-password', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   });
-  return res.json();
 }
 
 export async function getCurrentUser(): Promise<{ user?: any; session?: UserSession; error?: string }> {
-  const res = await fetch('/api/auth/me', {
+  const result = await safeFetchJson<{ user?: any; session?: UserSession; error?: string }>('/api/auth/me', {
     headers: getAuthHeaders(),
   });
-  if (!res.ok) {
-    return { error: 'Unauthorized' };
-  }
-  return res.json();
+  return result;
 }
 
 export async function logout(): Promise<void> {
   try {
-    await fetch('/api/auth/logout', {
+    await safeFetchJson('/api/auth/logout', {
       method: 'POST',
       headers: getAuthHeaders(),
     });
@@ -160,38 +144,33 @@ export async function logout(): Promise<void> {
 }
 
 export async function requestEnable2FA(): Promise<{ success: boolean; message?: string; error?: string; rawEmail?: string }> {
-  const res = await fetch('/api/auth/2fa/request-enable', {
+  return safeFetchJson('/api/auth/2fa/request-enable', {
     method: 'POST',
     headers: getAuthHeaders(),
   });
-  return res.json();
 }
 
 export async function confirmEnable2FA(code: string): Promise<{ success: boolean; twoFactorEnabled?: boolean; error?: string }> {
-  const res = await fetch('/api/auth/2fa/confirm-enable', {
+  return safeFetchJson('/api/auth/2fa/confirm-enable', {
     method: 'POST',
     headers: getAuthHeaders(),
     body: JSON.stringify({ code: code.trim() }),
   });
-  return res.json();
 }
 
 export async function disable2FA(): Promise<{ success: boolean; twoFactorEnabled?: boolean; error?: string }> {
-  const res = await fetch('/api/auth/2fa/disable', {
+  return safeFetchJson('/api/auth/2fa/disable', {
     method: 'POST',
     headers: getAuthHeaders(),
   });
-  return res.json();
 }
 
 export async function getDispatchedEmails(emailFilter?: string): Promise<DispatchedEmailTransmission[]> {
   try {
-    const url = emailFilter
+    const endpoint = emailFilter
       ? `/api/auth/dispatched-emails?email=${encodeURIComponent(emailFilter)}`
       : '/api/auth/dispatched-emails';
-    const res = await fetch(url);
-    if (!res.ok) return [];
-    const data = await res.json();
+    const data = await safeFetchJson<{ emails?: DispatchedEmailTransmission[] }>(endpoint);
     return data.emails || [];
   } catch {
     return [];
@@ -201,6 +180,7 @@ export async function getDispatchedEmails(emailFilter?: string): Promise<Dispatc
 export interface ActiveOTPResponse {
   success: boolean;
   code: string | null;
+  error?: string;
   to?: string;
   subject?: string;
   timestamp?: string;
@@ -210,12 +190,11 @@ export interface ActiveOTPResponse {
 
 export async function getActiveOTP(email?: string): Promise<ActiveOTPResponse | null> {
   try {
-    const url = email ? `/api/auth/active-otp?email=${encodeURIComponent(email)}` : '/api/auth/active-otp';
-    const res = await fetch(url);
-    if (!res.ok) return null;
-    return await res.json();
+    const endpoint = email ? `/api/auth/active-otp?email=${encodeURIComponent(email)}` : '/api/auth/active-otp';
+    const res = await safeFetchJson<ActiveOTPResponse>(endpoint);
+    if (res.error) return null;
+    return res;
   } catch {
     return null;
   }
 }
-

@@ -70,12 +70,25 @@ interface DatabaseSchema {
   dispatchedEmails: DispatchedEmail[];
 }
 
-const DATA_DIR = path.join(process.cwd(), 'data');
-const DB_FILE = path.join(DATA_DIR, 'auth-db.json');
+// Detect Serverless / Vercel environment where /var/task is read-only
+const isServerless = Boolean(
+  process.env.VERCEL ||
+  process.env.AWS_LAMBDA_FUNCTION_NAME ||
+  process.env.LAMBDA_TASK_ROOT ||
+  (process.env.NODE_ENV === 'production' && !fs.existsSync(path.join(process.cwd(), 'data')))
+);
 
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+const DATA_DIR = isServerless ? '/tmp' : path.join(process.cwd(), 'data');
+const DB_FILE = path.join(DATA_DIR, 'auth-db.json');
+const SEED_FILE = path.join(process.cwd(), 'data', 'auth-db.json');
+
+// Ensure data directory exists safely without throwing on read-only environments
+try {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+} catch (err) {
+  console.warn('[DB] Could not create storage directory, operating in memory-backed mode:', err);
 }
 
 // Helper for hashing password securely with scrypt
@@ -104,6 +117,22 @@ let dbCache: DatabaseSchema | null = null;
 function loadDatabase(): DatabaseSchema {
   if (dbCache) return dbCache;
 
+  // If in serverless mode and DB_FILE in /tmp does not exist yet, copy seed file
+  if (DB_FILE !== SEED_FILE && !fs.existsSync(DB_FILE) && fs.existsSync(SEED_FILE)) {
+    try {
+      const seedContent = fs.readFileSync(SEED_FILE, 'utf-8');
+      dbCache = JSON.parse(seedContent);
+      try {
+        fs.writeFileSync(DB_FILE, seedContent, 'utf-8');
+      } catch {
+        // Continue with in-memory cache
+      }
+      return dbCache!;
+    } catch (e) {
+      console.warn('[DB] Could not load from seed file:', e);
+    }
+  }
+
   if (fs.existsSync(DB_FILE)) {
     try {
       const content = fs.readFileSync(DB_FILE, 'utf-8');
@@ -111,6 +140,17 @@ function loadDatabase(): DatabaseSchema {
       return dbCache!;
     } catch (e) {
       console.error('Error reading auth-db.json, re-initializing', e);
+    }
+  }
+
+  // Also try fallback to SEED_FILE if DB_FILE is absent
+  if (fs.existsSync(SEED_FILE)) {
+    try {
+      const content = fs.readFileSync(SEED_FILE, 'utf-8');
+      dbCache = JSON.parse(content);
+      return dbCache!;
+    } catch {
+      // Continue to initial seed
     }
   }
 
@@ -149,9 +189,12 @@ function loadDatabase(): DatabaseSchema {
 
 function saveDatabase(db: DatabaseSchema) {
   try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
     fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), 'utf-8');
   } catch (e) {
-    console.error('Failed to persist auth-db.json:', e);
+    console.warn('[DB] Failed to persist auth-db.json to disk (in-memory cache preserved):', e);
   }
 }
 

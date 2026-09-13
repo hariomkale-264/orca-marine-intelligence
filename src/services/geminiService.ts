@@ -1,4 +1,5 @@
 import { ChatMessageItem, OrcaRole } from '../types.ts';
+import { buildApiUrl } from './apiClient.ts';
 
 export interface SendMessageParams {
   message: string;
@@ -17,7 +18,7 @@ export interface ChatResponse {
 
 export async function sendOrcaQuery(params: SendMessageParams): Promise<ChatResponse> {
   try {
-    const response = await fetch('/api/chat', {
+    const response = await fetch(buildApiUrl('/api/chat'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

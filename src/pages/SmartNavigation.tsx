@@ -21,6 +21,7 @@ import {
 } from '../components/GoogleMapsNavigator.tsx';
 import { MarineRadarMap } from '../components/MarineRadarMap.tsx';
 import { OrcaRole } from '../types.ts';
+import { buildApiUrl } from '../services/apiClient.ts';
 
 const INITIAL_WAYPOINTS: NavWaypoint[] = [
   {
@@ -321,7 +322,7 @@ export const SmartNavigation: React.FC = () => {
     setAiQuestion('');
 
     try {
-      const res = await fetch('/api/chat', {
+      const res = await fetch(buildApiUrl('/api/chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

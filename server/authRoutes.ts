@@ -114,7 +114,10 @@ authRouter.post('/signup', async (req: Request, res: Response) => {
     // Secure password hashing with scrypt
     const { hash, salt } = hashPassword(password);
 
-    // Create user in inactive/unverified state
+    // Determine if email verification OTP is required (default: true, configurable via env)
+    const requireVerification = process.env.REQUIRE_EMAIL_VERIFICATION !== 'false';
+
+    // Create user
     const newUser = createUser({
       email: email.trim().toLowerCase(),
       name: name?.trim() || 'Oceanic Operator',
@@ -123,23 +126,44 @@ authRouter.post('/signup', async (req: Request, res: Response) => {
       passwordHash: hash,
       passwordSalt: salt,
       authProvider: 'email',
-      emailVerified: false,
+      emailVerified: !requireVerification,
       twoFactorEnabled: false,
     });
 
-    // Generate random, cryptographically secure 6-digit OTP
-    const code = crypto.randomInt(100000, 1000000).toString();
-    storeOTP(newUser.email, code, 'email_verification', 300);
+    if (requireVerification) {
+      // Generate random, cryptographically secure 6-digit OTP
+      const code = crypto.randomInt(100000, 1000000).toString();
+      storeOTP(newUser.email, code, 'email_verification', 300);
 
-    // Send verification email immediately
-    await sendOTPEmail(newUser.email, code, 'email_verification');
+      // Send verification email immediately
+      await sendOTPEmail(newUser.email, code, 'email_verification');
 
+      res.status(201).json({
+        success: true,
+        requireVerification: true,
+        email: maskEmail(newUser.email),
+        rawEmail: newUser.email,
+        message: 'Account created. Verification code sent to your email.',
+      });
+      return;
+    }
+
+    // Direct activation: create session and log user in immediately
+    const session = createSession(newUser);
     res.status(201).json({
       success: true,
-      requireVerification: true,
-      email: maskEmail(newUser.email),
-      rawEmail: newUser.email,
-      message: 'Account created. Verification code sent to your email.',
+      requireVerification: false,
+      session,
+      user: {
+        id: newUser.id,
+        email: newUser.email,
+        name: newUser.name,
+        role: newUser.role,
+        organization: newUser.organization,
+        twoFactorEnabled: false,
+        authProvider: 'email',
+      },
+      message: 'Account created successfully.',
     });
   } catch (err: any) {
     console.error('Sign up error:', err);
@@ -510,7 +534,8 @@ authRouter.post('/forgot-password', async (req: Request, res: Response) => {
     const user = findUserByEmail(email);
     if (user && user.authProvider === 'email') {
       const token = createPasswordResetToken(user.email);
-      const appUrl = process.env.APP_URL || `http://localhost:${process.env.PORT || 3000}`;
+      const reqOrigin = (req.headers.origin as string) || (req.headers.host ? `${req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http'}://${req.headers.host}` : '');
+      const appUrl = process.env.APP_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : reqOrigin || 'https://orca-marine.ai');
       const resetUrl = `${appUrl}/login?reset_token=${token}&email=${encodeURIComponent(user.email)}`;
       await sendPasswordResetEmail(user.email, resetUrl);
     }

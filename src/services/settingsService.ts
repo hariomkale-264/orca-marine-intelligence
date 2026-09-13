@@ -30,6 +30,7 @@ import {
   PrivacySettings,
   SecuritySettings,
 } from '../types.ts';
+import { buildApiUrl } from './apiClient.ts';
 
 const STORAGE_KEY_SETTINGS = 'orca_settings';
 const STORAGE_KEY_NOTIFICATIONS = 'orca_notification_preferences';
@@ -338,7 +339,7 @@ export const requestTwoFactorActivation = async (): Promise<{ success: boolean; 
     const token = localStorage.getItem('orca_session')
       ? JSON.parse(localStorage.getItem('orca_session') || '{}')?.token
       : null;
-    const res = await fetch('/api/auth/2fa/request-enable', {
+    const res = await fetch(buildApiUrl('/api/auth/2fa/request-enable'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -360,7 +361,7 @@ export const enableTwoFactor = async (code: string): Promise<{ success: boolean;
     const token = localStorage.getItem('orca_session')
       ? JSON.parse(localStorage.getItem('orca_session') || '{}')?.token
       : null;
-    const res = await fetch('/api/auth/2fa/confirm-enable', {
+    const res = await fetch(buildApiUrl('/api/auth/2fa/confirm-enable'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -395,7 +396,7 @@ export const disableTwoFactor = async (): Promise<boolean> => {
     const token = localStorage.getItem('orca_session')
       ? JSON.parse(localStorage.getItem('orca_session') || '{}')?.token
       : null;
-    await fetch('/api/auth/2fa/disable', {
+    await fetch(buildApiUrl('/api/auth/2fa/disable'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

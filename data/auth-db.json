@@ -27,9 +27,82 @@
       "id": "usr_a96482a4104b7280c4c45d1c",
       "createdAt": "2026-09-13T08:42:00.929Z",
       "updatedAt": "2026-09-13T08:42:25.569Z"
+    },
+    "kaleom582@gmail.com": {
+      "email": "kaleom582@gmail.com",
+      "name": "harry",
+      "role": "Coastal Authorities",
+      "organization": "Oceanic Research Network",
+      "passwordHash": "65d4af00e814cd96a9af69aa1d7bfaa2cdc0a37ade33fa5f135f916a9a6219f10a97846c660ee53343025d99112a3b2a5a2827cae5981b9551506fff209b8d0b",
+      "passwordSalt": "c15ecc812bb1e53edbe26ef8e639848c",
+      "authProvider": "email",
+      "emailVerified": true,
+      "twoFactorEnabled": false,
+      "id": "usr_7f7c231caffbbc5970719ff2",
+      "createdAt": "2026-09-13T13:02:16.693Z",
+      "updatedAt": "2026-09-13T13:02:20.339Z"
+    },
+    "harry235@gmail.com": {
+      "email": "harry235@gmail.com",
+      "name": "harry",
+      "role": "Coastal Authorities",
+      "organization": "Oceanic Research Network",
+      "passwordHash": "4ec6f36222403c60302708871dd49d19f2ae29e8fe363f9fb827b20a2b873e49c15f377ba050be670ed5c792e1f263417d96de3daf85286257db961a09fa2c08",
+      "passwordSalt": "f1cb8ddea63f2152626a6f826d1545a4",
+      "authProvider": "email",
+      "emailVerified": true,
+      "twoFactorEnabled": false,
+      "id": "usr_df5190c63bca43d4577e7d49",
+      "createdAt": "2026-09-13T15:00:57.875Z",
+      "updatedAt": "2026-09-13T15:01:01.429Z"
+    },
+    "alex.drake@ocean-telemetry.org": {
+      "email": "alex.drake@ocean-telemetry.org",
+      "name": "Captain Alex Drake",
+      "role": "Coastal Authorities",
+      "organization": "Global Marine Network",
+      "passwordHash": "0c8f8db061650cbcf597780b1fa24afc1aba2863f1a2be4c1fe3b84e78b28e2f6e1ae3f9ba47b5347b70c9cf47a44607b7eed674d8f1d26397e403d30e9daf93",
+      "passwordSalt": "f1eaba3d388e7a727c12dfbfa5975f74",
+      "authProvider": "email",
+      "emailVerified": true,
+      "twoFactorEnabled": false,
+      "id": "usr_0485e290c929c4795560b1e2",
+      "createdAt": "2026-09-13T16:00:10.141Z",
+      "updatedAt": "2026-09-13T16:00:13.815Z"
     }
   },
-  "sessions": {},
+  "sessions": {
+    "d0ffb5ebbd844bfa8615a2dc296c67c6d9de6b7853412c65303a20fd79340e5a": {
+      "token": "d0ffb5ebbd844bfa8615a2dc296c67c6d9de6b7853412c65303a20fd79340e5a",
+      "userId": "usr_df5190c63bca43d4577e7d49",
+      "email": "harry235@gmail.com",
+      "name": "harry",
+      "role": "Coastal Authorities",
+      "organization": "Oceanic Research Network",
+      "stationId": "NODE-PACIFIC-09",
+      "nodeLocation": "Pacific Deep Basin • Grid 48.2N",
+      "telemetryStatus": "online",
+      "loginTimestamp": "03:01 PM",
+      "authProvider": "email",
+      "createdAt": 1789311661430,
+      "expiresAt": 1789916461430
+    },
+    "4e19baa284b06aa663f1d8e984f9c6ac6ed9049dd7560c64db6f680a6b8c03e3": {
+      "token": "4e19baa284b06aa663f1d8e984f9c6ac6ed9049dd7560c64db6f680a6b8c03e3",
+      "userId": "usr_0485e290c929c4795560b1e2",
+      "email": "alex.drake@ocean-telemetry.org",
+      "name": "Captain Alex Drake",
+      "role": "Coastal Authorities",
+      "organization": "Global Marine Network",
+      "stationId": "NODE-PACIFIC-09",
+      "nodeLocation": "Pacific Deep Basin • Grid 48.2N",
+      "telemetryStatus": "online",
+      "loginTimestamp": "04:00 PM",
+      "authProvider": "email",
+      "createdAt": 1789315213815,
+      "expiresAt": 1789920013815
+    }
+  },
   "otps": {
     "captain.marine@oceanic.gov:2fa_login": {
       "email": "captain.marine@oceanic.gov",
@@ -50,6 +123,33 @@
     }
   },
   "dispatchedEmails": [
+    {
+      "to": "alex.drake@ocean-telemetry.org",
+      "subject": "Your verification code",
+      "body": "Your verification code is 688225.\n\nThis code expires in 5 minutes.\n\nIf you did not request this code, please secure your account.\n\nNode: ORCA Maritime Security Mesh\nTimestamp: Sun, 13 Sep 2026 16:00:10 GMT",
+      "type": "otp",
+      "expiresAt": "2026-09-13T16:05:10.142Z",
+      "id": "msg_aee4855933c52060",
+      "timestamp": "2026-09-13T16:00:10.143Z"
+    },
+    {
+      "to": "harry235@gmail.com",
+      "subject": "Your verification code",
+      "body": "Your verification code is 419213.\n\nThis code expires in 5 minutes.\n\nIf you did not request this code, please secure your account.\n\nNode: ORCA Maritime Security Mesh\nTimestamp: Sun, 13 Sep 2026 15:00:57 GMT",
+      "type": "otp",
+      "expiresAt": "2026-09-13T15:05:57.876Z",
+      "id": "msg_7d06efa0d7196fb0",
+      "timestamp": "2026-09-13T15:00:57.876Z"
+    },
+    {
+      "to": "kaleom582@gmail.com",
+      "subject": "Your verification code",
+      "body": "Your verification code is 332447.\n\nThis code expires in 5 minutes.\n\nIf you did not request this code, please secure your account.\n\nNode: ORCA Maritime Security Mesh\nTimestamp: Sun, 13 Sep 2026 13:02:16 GMT",
+      "type": "otp",
+      "expiresAt": "2026-09-13T13:07:16.694Z",
+      "id": "msg_ff9e5f418f66d580",
+      "timestamp": "2026-09-13T13:02:16.695Z"
+    },
     {
       "to": "captain.marine@oceanic.gov",
       "subject": "Your verification code",
