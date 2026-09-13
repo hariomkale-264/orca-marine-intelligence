@@ -1,0 +1,99 @@
+{
+  "users": {
+    "commander@orca-marine.ai": {
+      "id": "user_commander_01",
+      "email": "commander@orca-marine.ai",
+      "name": "Chief Telemetry Officer",
+      "role": "Coastal Authorities",
+      "organization": "Oceanic AI Research & Deep Ocean Telemetry",
+      "passwordHash": "77f16a3a947c9dafe08a3c7f7d96f023942cbe9d6a2f996fb11f2cdaad91765316e833587124c2d05cbf429adfe3c06e1ad6a4afa5085fc13da146ea1f7a82fe",
+      "passwordSalt": "b4b9d517c863079181c774b0e18ff38e",
+      "authProvider": "email",
+      "emailVerified": true,
+      "twoFactorEnabled": false,
+      "createdAt": "2026-09-13T08:41:56.880Z",
+      "updatedAt": "2026-09-13T08:41:56.880Z"
+    },
+    "captain.marine@oceanic.gov": {
+      "email": "captain.marine@oceanic.gov",
+      "name": "Captain Marcus",
+      "role": "Maritime Operators",
+      "organization": "Pacific Patrol",
+      "passwordHash": "67bcb95ac495c868577612fc9b302b82b6aa415d7d66d3cca8f6be4b30aa3f496be2711c18c8e9e1bc9371f8d890e9ba5bf988bad2efb535c33364a444c8900f",
+      "passwordSalt": "9ba6beb55f6f9e7069b962cdea501b67",
+      "authProvider": "email",
+      "emailVerified": true,
+      "twoFactorEnabled": true,
+      "id": "usr_a96482a4104b7280c4c45d1c",
+      "createdAt": "2026-09-13T08:42:00.929Z",
+      "updatedAt": "2026-09-13T08:42:25.569Z"
+    }
+  },
+  "sessions": {},
+  "otps": {
+    "captain.marine@oceanic.gov:2fa_login": {
+      "email": "captain.marine@oceanic.gov",
+      "hashedCode": "37b90391590f2e423cf7d8ee1bff8b4566e9b744ba62971f07eb230ea5a45204",
+      "purpose": "2fa_login",
+      "expiresAt": 1789289250287,
+      "attempts": 0,
+      "lastRequestedAt": 1789288950287,
+      "resendCooldownUntil": 1789289010287
+    }
+  },
+  "resetTokens": {
+    "29104be747934de9633fd20c5cb630a91f16764ffc008bd3f2bbbd0b5d1f76f3": {
+      "token": "29104be747934de9633fd20c5cb630a91f16764ffc008bd3f2bbbd0b5d1f76f3",
+      "email": "captain.marine@oceanic.gov",
+      "expiresAt": 1789289841980,
+      "used": true
+    }
+  },
+  "dispatchedEmails": [
+    {
+      "to": "captain.marine@oceanic.gov",
+      "subject": "Your verification code",
+      "body": "Your verification code is 632867.\n\nThis code expires in 5 minutes.\n\nIf you did not request this code, please secure your account.\n\nNode: ORCA Maritime Security Mesh\nTimestamp: Sun, 13 Sep 2026 08:42:30 GMT",
+      "type": "otp",
+      "expiresAt": "2026-09-13T08:47:30.288Z",
+      "id": "msg_7245bb523429320f",
+      "timestamp": "2026-09-13T08:42:30.288Z"
+    },
+    {
+      "to": "captain.marine@oceanic.gov",
+      "subject": "ORCA Security: Reset your password",
+      "body": "You recently requested to reset your password for your ORCA Marine Intelligence account.\n\nClick the link below or copy it into your browser to reset your password:\nhttps://ais-dev-bjqjlx4l6vweiptoxrhzfl-280533332771.asia-east1.run.app/login?reset_token=29104be747934de9633fd20c5cb630a91f16764ffc008bd3f2bbbd0b5d1f76f3&email=captain.marine%40oceanic.gov\n\nThis link is valid for 15 minutes and can only be used once.\n\nIf you did not request a password reset, you can safely ignore this email.",
+      "type": "password_reset",
+      "expiresAt": "2026-09-13T08:57:21.981Z",
+      "id": "msg_83d8b087e63eb150",
+      "timestamp": "2026-09-13T08:42:21.981Z"
+    },
+    {
+      "to": "captain.marine@oceanic.gov",
+      "subject": "Your verification code",
+      "body": "Your verification code is 533871.\n\nThis code expires in 5 minutes.\n\nIf you did not request this code, please secure your account.\n\nNode: ORCA Maritime Security Mesh\nTimestamp: Sun, 13 Sep 2026 08:42:20 GMT",
+      "type": "otp",
+      "expiresAt": "2026-09-13T08:47:20.060Z",
+      "id": "msg_c2f18307277e8b96",
+      "timestamp": "2026-09-13T08:42:20.060Z"
+    },
+    {
+      "to": "captain.marine@oceanic.gov",
+      "subject": "Your verification code",
+      "body": "Your verification code is 983860.\n\nThis code expires in 5 minutes.\n\nIf you did not request this code, please secure your account.\n\nNode: ORCA Maritime Security Mesh\nTimestamp: Sun, 13 Sep 2026 08:42:13 GMT",
+      "type": "otp",
+      "expiresAt": "2026-09-13T08:47:13.231Z",
+      "id": "msg_df727d74c8c24a83",
+      "timestamp": "2026-09-13T08:42:13.231Z"
+    },
+    {
+      "to": "captain.marine@oceanic.gov",
+      "subject": "Your verification code",
+      "body": "Your verification code is 194655.\n\nThis code expires in 5 minutes.\n\nIf you did not request this code, please secure your account.\n\nNode: ORCA Maritime Security Mesh\nTimestamp: Sun, 13 Sep 2026 08:42:00 GMT",
+      "type": "otp",
+      "expiresAt": "2026-09-13T08:47:00.930Z",
+      "id": "msg_abb432f3a48e6156",
+      "timestamp": "2026-09-13T08:42:00.930Z"
+    }
+  ]
+}

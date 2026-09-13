@@ -1,0 +1,6 @@
+{
+  "name": "ORCA - Marine Intelligence",
+  "description": "Full-screen marine AI assistant and oceanographic decision-support platform for fishermen, researchers, authorities, and operators.",
+  "requestFramePermissions": ["microphone", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
